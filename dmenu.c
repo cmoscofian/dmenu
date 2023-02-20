@@ -54,6 +54,7 @@ static XIC xic;
 
 static Drw *drw;
 static Clr *scheme[SchemeLast];
+static Clr *border;
 
 #include "config.h"
 
@@ -118,6 +119,7 @@ cleanup(void)
 	for (i = 0; items && items[i].text; ++i)
 		free(items[i].text);
 	free(items);
+	free(border);
 	drw_free(drw);
 	XSync(dpy, False);
 	XCloseDisplay(dpy);
@@ -725,7 +727,10 @@ setup(void)
 #endif
 	/* init appearance */
 	for (j = 0; j < SchemeLast; j++)
-		scheme[j] = drw_scm_create(drw, colors[j], 3);
+		scheme[j] = drw_scm_create(drw, colors[j], ColLast);
+
+    border = malloc(sizeof(XftColor));
+    drw_clr_create(drw, border, bordercolor);
 
 	clip = XInternAtom(dpy, "CLIPBOARD",   False);
 	utf8 = XInternAtom(dpy, "UTF8_STRING", False);
@@ -791,7 +796,7 @@ setup(void)
 	                    CopyFromParent, CopyFromParent, CopyFromParent,
 	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
 	if (border_width)
-		XSetWindowBorder(dpy, win, scheme[SchemeSel][2].pixel);
+		XSetWindowBorder(dpy, win, border->pixel);
 	XSetClassHint(dpy, win, &ch);
 
 

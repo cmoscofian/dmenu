@@ -31,12 +31,14 @@ static const char light_fuchsia[]   = "#ff00ff";
 static const char light_cyan[]      = "#00ffff";
 static const char light_grey[]      = "#c0c0c0";
 
-static const char *colors[SchemeLast][3] = {
-	/*                  fg          bg          border      */
-	[SchemeNorm]    = { dark_blue,  light_grey, light_cyan  },
-	[SchemeSel]     = { light_grey, dark_cyan,  light_cyan  },
-	[SchemeOut]     = { black,      white,      light_cyan  },
+static const char *colors[SchemeLast][ColLast] = {
+	/*                  fg          bg          */
+	[SchemeNorm]    = { dark_blue,  light_grey  },
+	[SchemeSel]     = { light_grey, dark_cyan   },
+	[SchemeOut]     = { black,      white       },
 };
+
+static const char *bordercolor = light_cyan;
 
 /*
  * Characters not considered part of a word while deleting words
