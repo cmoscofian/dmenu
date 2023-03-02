@@ -767,7 +767,7 @@ setup(void)
 					break;
 
 		/* make dmenu centered */
-		mw = MIN(MAX(max_textw() + promptw, min_width), info[i].width);
+		mw = MIN(MAX(max_textw() + promptw, minwidth), info[i].width);
 		x = info[i].x_org + ((info[i].width  - mw) / 2);
 		y = info[i].y_org + ((info[i].height - mh) / 2);
 
@@ -780,7 +780,7 @@ setup(void)
 			    parentwin);
 
 		/* make dmenu centered */
-		mw = MIN(MAX(max_textw() + promptw, min_width), wa.width);
+		mw = MIN(MAX(max_textw() + promptw, minwidth), wa.width);
 		x = (wa.width  - mw) / 2;
 		y = (wa.height - mh) / 2;
 	}
@@ -792,10 +792,10 @@ setup(void)
 	swa.override_redirect = True;
 	swa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
 	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
-	win = XCreateWindow(dpy, parentwin, x, y - (topbar ? 0 : border_width * 2), mw - border_width * 2, mh, border_width,
+	win = XCreateWindow(dpy, parentwin, x, y, mw - borderwidth * 2, mh, borderwidth,
 	                    CopyFromParent, CopyFromParent, CopyFromParent,
 	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
-	if (border_width)
+	if (borderwidth)
 		XSetWindowBorder(dpy, win, border->pixel);
 	XSetClassHint(dpy, win, &ch);
 
@@ -839,8 +839,7 @@ main(int argc, char *argv[])
 		if (!strcmp(argv[i], "-v")) {      /* prints version information */
 			puts("dmenu-"VERSION);
 			exit(0);
-		} else if (!strcmp(argv[i], "-b")) /* appears at the bottom of the screen */
-			topbar = 0;
+		}
 		else if (!strcmp(argv[i], "-f"))   /* grabs keyboard before reading stdin */
 			fast = 1;
 		else if (!strcmp(argv[i], "-i")) { /* case-insensitive item matching */
@@ -868,7 +867,7 @@ main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-w"))   /* embedding window id */
 			embed = argv[++i];
 		else if (!strcmp(argv[i], "-bw"))
-			border_width = atoi(argv[++i]); /* border width */
+			borderwidth = atoi(argv[++i]); /* border width */
 		else if (!strcmp(argv[i], "-z"))   /* grabs keyboard before reading stdin */
 			fuzzy = 1;
 		else
